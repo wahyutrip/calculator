@@ -1,0 +1,20 @@
+# Keep the build context small and, above all, keep secrets out of it.
+node_modules
+**/node_modules
+.git
+.github
+logs
+coverage
+playwright-report
+test-results
+**/.next
+**/dist
+**/.turbo
+*.tsbuildinfo
+
+# Never ship a private key into a build context.
+**/.env.keys
+**/.env.local
+**/.env
+
+certificates

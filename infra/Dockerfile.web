@@ -1,0 +1,76 @@
+# syntax=docker/dockerfile:1.7
+# Production image for the money-management Next.js web app.
+# Build context = repo root:
+#   docker build -f infra/Dockerfile.web -t mm-web .
+#
+# NEXT_PUBLIC_* are inlined at BUILD time, so the public app URL must be passed
+# as a build arg — changing it later requires a rebuild, not just a restart.
+
+# --- deps -------------------------------------------------------------------
+# Install the FULL workspace (every member manifest) so the isolated per-package
+# node_modules exist — pnpm does not hoist, so apps/web/node_modules/.bin/next
+# only appears when apps/web/package.json was part of the install.
+FROM node:20-alpine AS deps
+RUN corepack enable
+WORKDIR /app
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml .npmrc turbo.json ./
+COPY apps/web/package.json apps/web/
+COPY apps/be/package.json apps/be/
+COPY packages/ packages/
+RUN pnpm install --frozen-lockfile
+
+# --- build ------------------------------------------------------------------
+FROM node:20-alpine AS build
+RUN corepack enable
+WORKDIR /app
+# Complete installed tree (root + per-package node_modules), then overlay source.
+COPY --from=deps /app ./
+COPY . .
+ENV NEXT_TELEMETRY_DISABLED=1
+# Which encrypted env to decrypt NEXT_PUBLIC_* from.
+ARG DOTENV_ENV=staging
+# Fallback for a keyless build (local / on-prem), so the image stays buildable
+# without any secret at all.
+ARG NEXT_PUBLIC_APP_URL=https://calculator.wahyutrip.com
+ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
+
+# Shared packages must be built before the app that imports their dist/.
+RUN pnpm turbo run build --filter='./packages/*'
+
+# dotenvx installed globally so the CLI is on PATH (pnpm isolates package bins).
+RUN npm i -g @dotenvx/dotenvx@1.51.0
+
+# With the key (a BuildKit secret, mounted only for this RUN and never baked into
+# a layer), decrypt the committed ciphertext so NEXT_PUBLIC_* inline correctly.
+# Without it, plain build using the ARG default.
+RUN --mount=type=secret,id=dotenv_private_key,required=false \
+  if [ -s /run/secrets/dotenv_private_key ]; then \
+    DOTENV_PRIVATE_KEY_STAGING="$(cat /run/secrets/dotenv_private_key)" \
+    DOTENV_PRIVATE_KEY_PRODUCTION="$(cat /run/secrets/dotenv_private_key)" \
+    dotenvx run -f "infra/env/web/.env.${DOTENV_ENV}" -- pnpm --filter @mm/web build; \
+  else \
+    echo "No dotenvx key supplied — building with NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL"; \
+    pnpm --filter @mm/web build; \
+  fi
+
+# --- runtime ----------------------------------------------------------------
+# Next standalone output (next.config.ts `output: 'standalone'`): a self-contained
+# server with only its traced deps — no full node_modules, no pnpm at runtime.
+FROM node:20-alpine AS runtime
+ENV NODE_ENV=production
+ENV PORT=3101
+ENV HOSTNAME=0.0.0.0
+ENV NEXT_TELEMETRY_DISABLED=1
+WORKDIR /app
+# chown to the non-root `node` user so runtime cache writes under .next succeed.
+COPY --from=build --chown=node:node /app/apps/web/.next/standalone ./
+# Static assets and public/ are NOT traced into standalone — copy them alongside.
+# public/ carries the PWA manifest, icons and the bundled IDX ticker list, so a
+# missing copy here silently breaks installability rather than erroring loudly.
+COPY --from=build --chown=node:node /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=build --chown=node:node /app/apps/web/public ./apps/web/public
+USER node
+EXPOSE 3101
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:3101/ || exit 1
+CMD ["node", "apps/web/server.js"]

@@ -1,0 +1,114 @@
+name: CI
+
+# The PR gate for main. Every step is a gate — nothing is continue-on-error.
+# The same suites are re-run on the release commit by deploy-staging.yml.
+
+on:
+  pull_request:
+    branches: [main, staging]
+  push:
+    branches: [main]
+  workflow_call:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9.12.0'
+
+jobs:
+  quality:
+    name: Lint · typecheck · unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # apps/web imports the shared packages by their built dist/, so they must
+      # exist before typecheck or the app build can resolve anything.
+      - name: Build shared packages
+        run: pnpm turbo run build --filter='./packages/*'
+
+      - run: pnpm lint
+
+      - run: pnpm typecheck
+
+      - name: Unit tests
+        run: pnpm test
+
+      # The whole product is this arithmetic being right. Below 100% here means an
+      # untested branch decides how many lots somebody buys.
+      - name: Engine coverage gate (100% branches)
+        run: pnpm --filter @mm/calc test:cov
+
+  e2e:
+    name: E2E (desktop + mobile)
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm turbo run build --filter='./packages/*'
+
+      - name: Build web
+        run: pnpm --filter @mm/web build
+
+      - name: Install Playwright browsers
+        run: pnpm --filter @mm/web exec playwright install --with-deps chromium
+
+      # Mobile is the primary target, so the primary target is what CI exercises.
+      - name: Run E2E
+        run: pnpm --filter @mm/web test:e2e
+        env:
+          WEB_PORT: '3199'
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: apps/web/playwright-report/
+          retention-days: 7
+
+  docker:
+    name: Docker image builds
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      # Built but not pushed on a PR. A Dockerfile that has never been built is a
+      # Dockerfile that does not work, and finding that out at deploy time is the
+      # expensive way.
+      - name: Build web image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./infra/Dockerfile.web
+          push: false
+          cache-from: type=gha,scope=mm-web
+          cache-to: type=gha,mode=max,scope=mm-web

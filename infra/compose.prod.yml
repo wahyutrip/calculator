@@ -1,0 +1,78 @@
+# money-management — AWS production stack (co-tenant on the shared dlhsby EC2
+# host alongside sekar and swat).
+#
+#   TLS / 80,443   -> the box's shared Caddy, owned by sekar, on the external
+#                     `edge` network. Our vhost is the drop-in infra/calculator.caddy.
+#   Database       -> AWS RDS (instance `dlhsby`) — Phase 2 only. The MVP web
+#                     container has NO datastore: everything lives in the user's
+#                     browser, which is why this stack is a single container.
+#   Object storage -> not used in the MVP.
+#
+# Usage on the box:
+#   IMAGE_TAG=<git-sha> docker compose -f compose.prod.yml pull
+#   IMAGE_TAG=<git-sha> docker compose -f compose.prod.yml up -d --wait
+
+name: mm-prod
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: '10m'
+    max-file: '3'
+
+services:
+  web:
+    image: ${ECR_REGISTRY:-659828096624.dkr.ecr.ap-southeast-3.amazonaws.com}/mm-web:${IMAGE_TAG:-latest}
+    container_name: mm-web
+    environment:
+      NODE_ENV: production
+      PORT: '3101'
+      HOSTNAME: 0.0.0.0
+    expose:
+      - '3101' # internal only — reached via the shared Caddy on the edge network
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://127.0.0.1:3101/']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # The box has 916MB of RAM and four tenants; measured free memory at the time
+    # of writing was ~160MB with swap absorbing the rest. This app is a stateless
+    # Next server for three routes and idles well under 100MB, so 192m is ample
+    # while leaving sekar/swat/portal room. An unbounded Node process here would
+    # degrade THEIR services, not just ours.
+    mem_limit: 192m
+    mem_reservation: 64m
+    restart: unless-stopped
+    logging: *default-logging
+    networks: [edge]
+
+  # Phase 2 — commented until the API carries real traffic. Deploying an idle
+  # container that only answers /health would consume memory on a shared box
+  # for no benefit; uncomment together with the api.calculator vhost.
+  #
+  # be:
+  #   image: ${ECR_REGISTRY}/mm-be:${IMAGE_TAG:-latest}
+  #   container_name: mm-be
+  #   environment:
+  #     NODE_ENV: production
+  #     PORT: '3100'
+  #     DATABASE_URL: ${DATABASE_URL}
+  #   expose: ['3100']
+  #   healthcheck:
+  #     test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://127.0.0.1:3100/health']
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 30s
+  #   mem_limit: 384m
+  #   restart: unless-stopped
+  #   logging: *default-logging
+  #   networks: [edge]
+
+networks:
+  # Shared bridge so the box's Caddy reaches mm-web by container name.
+  # Created once on the box (`docker network create edge`); external here so this
+  # stack never tries to own or delete it.
+  edge:
+    external: true

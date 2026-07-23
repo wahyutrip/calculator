@@ -1,0 +1,49 @@
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+.next/
+out/
+build/
+*.tsbuildinfo
+
+# Turbo
+.turbo/
+
+# Dev scripts (PID files + logs written by scripts/lib/common.sh)
+logs/
+
+# Env — plaintext never committed; only *.example files are.
+.env
+.env.local
+.env.*.local
+.env.staging
+.env.production
+!.env.example
+!.env.*.example
+
+# dotenvx: the files under infra/env/** are ENCRYPTED ciphertext and ARE committed
+# (that is the whole point — see specs/deployment/encrypted-secrets.md). Only the
+# private keys must never be. Losing this distinction either breaks the deploy or
+# leaks the key, so both rules are stated explicitly.
+!infra/env/web/.env.staging
+!infra/env/web/.env.production
+.env.keys
+infra/env/**/.env.keys
+
+# Test artifacts
+coverage/
+playwright-report/
+test-results/
+.lighthouseci/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Local TLS certificates minted by `next dev --experimental-https`
+certificates/

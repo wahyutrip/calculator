@@ -1,0 +1,56 @@
+# money-management — Caddy DROP-IN for calculator.wahyutrip.com.
+#
+# The dlhsby EC2 box's Caddy is owned by sekar (the `caddy` service in sekar's
+# compose.staging.yml) and already binds 80/443. This project is a CO-TENANT and
+# must NOT run its own Caddy. The box Caddyfile ends with
+#
+#     import /etc/caddy/conf.d/*.caddy
+#
+# and this file is deployed to ~/sekar/infra/conf.d/calculator.caddy, which is
+# bind-mounted into the sekar-caddy container at /etc/caddy/conf.d.
+#
+# Why a drop-in and not an edit to the box Caddyfile: sekar's deploy REGENERATES
+# its Caddyfile from its own repo on every release and would silently wipe any
+# block appended there — that is exactly what once took SWAT down. sekar never
+# touches conf.d/, so a drop-in is clobber-proof. SWAT already uses this pattern
+# (infra/Caddyfile.staging in the swat repo); we are the third tenant.
+#
+# The bare hostname (no scheme) tells Caddy to auto-provision a free Let's
+# Encrypt certificate and redirect HTTP→HTTPS. DNS for calculator.wahyutrip.com
+# already points at the box's Elastic IP and 80/443 are open.
+#
+# The app container joins the shared external `edge` network, so Caddy reaches it
+# by container name.
+#
+# ⚠ The box Caddyfile is bind-mounted as a single read-only FILE, so editing it
+# in place swaps the inode and `caddy reload` reports "config is unchanged".
+# Files under conf.d/ are in a bind-mounted DIRECTORY and do not have that
+# problem, but the container still needs a restart to re-resolve upstream
+# container IPs after a redeploy:  docker restart sekar-caddy
+
+calculator.wahyutrip.com {
+	encode gzip
+
+	# The MVP is a public, unauthenticated tool — no auth, no rate limiting.
+	# Revisit both when Phase 2 puts an API behind this hostname.
+	reverse_proxy mm-web:3101
+
+	# HSTS. Safe here because this hostname is HTTPS-only from day one and has
+	# never served plain HTTP content. Not preloaded — that is a one-way door
+	# for the whole wahyutrip.com tree and is not ours to decide.
+	header Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+	# The service worker must never be served stale: a cached sw.js pins users to
+	# an old app version indefinitely, and no amount of redeploying fixes it for
+	# someone who already has it. Next sets immutable caching on /_next/static/*
+	# (content-hashed, correct); these two files are NOT hashed.
+	@sw path /sw.js /manifest.webmanifest
+	header @sw Cache-Control "public, max-age=0, must-revalidate"
+
+	log {
+		output file /var/log/caddy/calculator.log {
+			roll_size 10mb
+			roll_keep 5
+		}
+	}
+}

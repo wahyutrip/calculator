@@ -1,0 +1,1111 @@
+{
+  "updatedAt": "2026-07-23",
+  "note": "Curated seed list of liquid IDX listings. Refresh with `pnpm tickers:refresh` once an official IDX data agreement is in place — see specs/features/ticker-data.md. The ticker is optional: the calculator works fully without selecting one.",
+  "count": 184,
+  "tickers": [
+    {
+      "code": "BBCA",
+      "name": "Bank Central Asia Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BBRI",
+      "name": "Bank Rakyat Indonesia (Persero) Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BMRI",
+      "name": "Bank Mandiri (Persero) Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BBNI",
+      "name": "Bank Negara Indonesia (Persero) Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BRIS",
+      "name": "Bank Syariah Indonesia Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BBTN",
+      "name": "Bank Tabungan Negara (Persero) Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BDMN",
+      "name": "Bank Danamon Indonesia Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BNGA",
+      "name": "Bank CIMB Niaga Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BJBR",
+      "name": "Bank Pembangunan Daerah Jawa Barat dan Banten Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BJTM",
+      "name": "Bank Pembangunan Daerah Jawa Timur Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BTPS",
+      "name": "Bank BTPN Syariah Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "ARTO",
+      "name": "Bank Jago Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BANK",
+      "name": "Bank Aladin Syariah Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "AGRO",
+      "name": "Bank Raya Indonesia Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "PNBN",
+      "name": "Bank Pan Indonesia Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "MEGA",
+      "name": "Bank Mega Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "NISP",
+      "name": "Bank OCBC NISP Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BBKP",
+      "name": "Bank KB Bukopin Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BBHI",
+      "name": "Allo Bank Indonesia Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BBYB",
+      "name": "Bank Neo Commerce Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "PANI",
+      "name": "Pantai Indah Kapuk Dua Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "ADRO",
+      "name": "Alamtri Resources Indonesia Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "PTBA",
+      "name": "Bukit Asam Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "ITMG",
+      "name": "Indo Tambangraya Megah Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "HRUM",
+      "name": "Harum Energy Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "INDY",
+      "name": "Indika Energy Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "BUMI",
+      "name": "Bumi Resources Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "BYAN",
+      "name": "Bayan Resources Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "MEDC",
+      "name": "Medco Energi Internasional Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "PGAS",
+      "name": "Perusahaan Gas Negara Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "ELSA",
+      "name": "Elnusa Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "AKRA",
+      "name": "AKR Corporindo Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "DOID",
+      "name": "Delta Dunia Makmur Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "DEWA",
+      "name": "Darma Henwa Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "GEMS",
+      "name": "Golden Energy Mines Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "TOBA",
+      "name": "TBS Energi Utama Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "RAJA",
+      "name": "Rukun Raharja Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "ANTM",
+      "name": "Aneka Tambang Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "INCO",
+      "name": "Vale Indonesia Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "MDKA",
+      "name": "Merdeka Copper Gold Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "TINS",
+      "name": "Timah Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "INTP",
+      "name": "Indocement Tunggal Prakarsa Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "SMGR",
+      "name": "Semen Indonesia (Persero) Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "BRPT",
+      "name": "Barito Pacific Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "TPIA",
+      "name": "Chandra Asri Pacific Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "MDKI",
+      "name": "Emdeki Utama Tbk.",
+      "sector": "Barang Baku",
+      "board": "Pengembangan"
+    },
+    {
+      "code": "NCKL",
+      "name": "Trimegah Bangun Persada Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "MBMA",
+      "name": "Merdeka Battery Materials Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "ESSA",
+      "name": "ESSA Industries Indonesia Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "AVIA",
+      "name": "Avia Avian Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "SMBR",
+      "name": "Semen Baturaja Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "INKP",
+      "name": "Indah Kiat Pulp & Paper Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "TKIM",
+      "name": "Pabrik Kertas Tjiwi Kimia Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "ASII",
+      "name": "Astra International Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "UNTR",
+      "name": "United Tractors Tbk.",
+      "sector": "Perindustrian",
+      "board": "Utama"
+    },
+    {
+      "code": "HEXA",
+      "name": "Hexindo Adiperkasa Tbk.",
+      "sector": "Perindustrian",
+      "board": "Utama"
+    },
+    {
+      "code": "ARNA",
+      "name": "Arwana Citramulia Tbk.",
+      "sector": "Perindustrian",
+      "board": "Utama"
+    },
+    {
+      "code": "IMPC",
+      "name": "Impack Pratama Industri Tbk.",
+      "sector": "Perindustrian",
+      "board": "Utama"
+    },
+    {
+      "code": "MARK",
+      "name": "Mark Dynamics Indonesia Tbk.",
+      "sector": "Perindustrian",
+      "board": "Utama"
+    },
+    {
+      "code": "UNVR",
+      "name": "Unilever Indonesia Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "ICBP",
+      "name": "Indofood CBP Sukses Makmur Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "INDF",
+      "name": "Indofood Sukses Makmur Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "MYOR",
+      "name": "Mayora Indah Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "GGRM",
+      "name": "Gudang Garam Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "HMSP",
+      "name": "H.M. Sampoerna Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "CPIN",
+      "name": "Charoen Pokphand Indonesia Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "JPFA",
+      "name": "Japfa Comfeed Indonesia Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "MAIN",
+      "name": "Malindo Feedmill Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "AALI",
+      "name": "Astra Agro Lestari Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "LSIP",
+      "name": "PP London Sumatra Indonesia Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "SIMP",
+      "name": "Salim Ivomas Pratama Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "TBLA",
+      "name": "Tunas Baru Lampung Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "DSNG",
+      "name": "Dharma Satya Nusantara Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "SGRO",
+      "name": "Sampoerna Agro Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "CLEO",
+      "name": "Sariguna Primatirta Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "ROTI",
+      "name": "Nippon Indosari Corpindo Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "ULTJ",
+      "name": "Ultrajaya Milk Industry & Trading Company Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "JELI",
+      "name": "Niramas Utama Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Pengembangan"
+    },
+    {
+      "code": "CMRY",
+      "name": "Cisarua Mountain Dairy Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "AMRT",
+      "name": "Sumber Alfaria Trijaya Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "MIDI",
+      "name": "Midi Utama Indonesia Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "HERO",
+      "name": "Hero Supermarket Tbk.",
+      "sector": "Barang Konsumen Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "MAPI",
+      "name": "Mitra Adiperkasa Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "MAPA",
+      "name": "Map Aktif Adiperkasa Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "ACES",
+      "name": "Aspirasi Hidup Indonesia Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "ERAA",
+      "name": "Erajaya Swasembada Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "LPPF",
+      "name": "Matahari Department Store Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "RALS",
+      "name": "Ramayana Lestari Sentosa Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "SCMA",
+      "name": "Surya Citra Media Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "MNCN",
+      "name": "Media Nusantara Citra Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "ASSA",
+      "name": "Adi Sarana Armada Tbk.",
+      "sector": "Transportasi & Logistik",
+      "board": "Utama"
+    },
+    {
+      "code": "BIRD",
+      "name": "Blue Bird Tbk.",
+      "sector": "Transportasi & Logistik",
+      "board": "Utama"
+    },
+    {
+      "code": "SMDR",
+      "name": "Samudera Indonesia Tbk.",
+      "sector": "Transportasi & Logistik",
+      "board": "Utama"
+    },
+    {
+      "code": "TMAS",
+      "name": "Temas Tbk.",
+      "sector": "Transportasi & Logistik",
+      "board": "Utama"
+    },
+    {
+      "code": "GIAA",
+      "name": "Garuda Indonesia (Persero) Tbk.",
+      "sector": "Transportasi & Logistik",
+      "board": "Utama"
+    },
+    {
+      "code": "TLKM",
+      "name": "Telkom Indonesia (Persero) Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "EXCL",
+      "name": "XLSmart Telecom Sejahtera Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "ISAT",
+      "name": "Indosat Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "TOWR",
+      "name": "Sarana Menara Nusantara Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "TBIG",
+      "name": "Tower Bersama Infrastructure Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "MTEL",
+      "name": "Dayamitra Telekomunikasi Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "JSMR",
+      "name": "Jasa Marga (Persero) Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "WIKA",
+      "name": "Wijaya Karya (Persero) Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "WSKT",
+      "name": "Waskita Karya (Persero) Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "PTPP",
+      "name": "PP (Persero) Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "ADHI",
+      "name": "Adhi Karya (Persero) Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "TOTL",
+      "name": "Total Bangun Persada Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "PTPW",
+      "name": "Pratama Widya Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Pengembangan"
+    },
+    {
+      "code": "POWR",
+      "name": "Cikarang Listrindo Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "BREN",
+      "name": "Barito Renewables Energy Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "KEEN",
+      "name": "Kencana Energi Lestari Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Utama"
+    },
+    {
+      "code": "ARKO",
+      "name": "Arkora Hydro Tbk.",
+      "sector": "Infrastruktur",
+      "board": "Pengembangan"
+    },
+    {
+      "code": "BMTR",
+      "name": "Global Mediacom Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "GOTO",
+      "name": "GoTo Gojek Tokopedia Tbk.",
+      "sector": "Teknologi",
+      "board": "Utama"
+    },
+    {
+      "code": "BUKA",
+      "name": "Bukalapak.com Tbk.",
+      "sector": "Teknologi",
+      "board": "Utama"
+    },
+    {
+      "code": "EMTK",
+      "name": "Elang Mahkota Teknologi Tbk.",
+      "sector": "Teknologi",
+      "board": "Utama"
+    },
+    {
+      "code": "DCII",
+      "name": "DCI Indonesia Tbk.",
+      "sector": "Teknologi",
+      "board": "Utama"
+    },
+    {
+      "code": "MTDL",
+      "name": "Metrodata Electronics Tbk.",
+      "sector": "Teknologi",
+      "board": "Utama"
+    },
+    {
+      "code": "MLPT",
+      "name": "Multipolar Technology Tbk.",
+      "sector": "Teknologi",
+      "board": "Utama"
+    },
+    {
+      "code": "WIFI",
+      "name": "Solusi Sinergi Digital Tbk.",
+      "sector": "Teknologi",
+      "board": "Pengembangan"
+    },
+    {
+      "code": "EDGE",
+      "name": "Indointernet Tbk.",
+      "sector": "Teknologi",
+      "board": "Utama"
+    },
+    {
+      "code": "TOSK",
+      "name": "Toson Karya Perkasa Tbk.",
+      "sector": "Teknologi",
+      "board": "Pengembangan"
+    },
+    {
+      "code": "KLBF",
+      "name": "Kalbe Farma Tbk.",
+      "sector": "Kesehatan",
+      "board": "Utama"
+    },
+    {
+      "code": "SIDO",
+      "name": "Industri Jamu dan Farmasi Sido Muncul Tbk.",
+      "sector": "Kesehatan",
+      "board": "Utama"
+    },
+    {
+      "code": "KAEF",
+      "name": "Kimia Farma Tbk.",
+      "sector": "Kesehatan",
+      "board": "Utama"
+    },
+    {
+      "code": "INAF",
+      "name": "Indofarma Tbk.",
+      "sector": "Kesehatan",
+      "board": "Utama"
+    },
+    {
+      "code": "MIKA",
+      "name": "Mitra Keluarga Karyasehat Tbk.",
+      "sector": "Kesehatan",
+      "board": "Utama"
+    },
+    {
+      "code": "HEAL",
+      "name": "Medikaloka Hermina Tbk.",
+      "sector": "Kesehatan",
+      "board": "Utama"
+    },
+    {
+      "code": "SILO",
+      "name": "Siloam International Hospitals Tbk.",
+      "sector": "Kesehatan",
+      "board": "Utama"
+    },
+    {
+      "code": "PRDA",
+      "name": "Prodia Widyahusada Tbk.",
+      "sector": "Kesehatan",
+      "board": "Utama"
+    },
+    {
+      "code": "SRAJ",
+      "name": "Sejahteraraya Anugrahjaya Tbk.",
+      "sector": "Kesehatan",
+      "board": "Utama"
+    },
+    {
+      "code": "BSDE",
+      "name": "Bumi Serpong Damai Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "CTRA",
+      "name": "Ciputra Development Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "SMRA",
+      "name": "Summarecon Agung Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "PWON",
+      "name": "Pakuwon Jati Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "LPKR",
+      "name": "Lippo Karawaci Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "APLN",
+      "name": "Agung Podomoro Land Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "ASRI",
+      "name": "Alam Sutera Realty Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "DILD",
+      "name": "Intiland Development Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "KIJA",
+      "name": "Kawasan Industri Jababeka Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "DMAS",
+      "name": "Puradelta Lestari Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "BEST",
+      "name": "Bekasi Fajar Industrial Estate Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "SSIA",
+      "name": "Surya Semesta Internusa Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "MTLA",
+      "name": "Metropolitan Land Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "CBDK",
+      "name": "Bangun Kosambi Sukses Tbk.",
+      "sector": "Properti & Real Estat",
+      "board": "Utama"
+    },
+    {
+      "code": "BSSR",
+      "name": "Baramulti Suksessarana Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "ADMR",
+      "name": "Adaro Minerals Indonesia Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "AADI",
+      "name": "Adaro Andalan Indonesia Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "CUAN",
+      "name": "Petrindo Jaya Kreasi Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "PTRO",
+      "name": "Petrosea Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "MBAP",
+      "name": "Mitrabara Adiperdana Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "ABMM",
+      "name": "ABM Investama Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "SMMT",
+      "name": "Golden Eagle Energy Tbk.",
+      "sector": "Energi",
+      "board": "Utama"
+    },
+    {
+      "code": "ITMA",
+      "name": "Sumber Energi Andalan Tbk.",
+      "sector": "Energi",
+      "board": "Pengembangan"
+    },
+    {
+      "code": "VKTR",
+      "name": "VKTR Teknologi Mobilitas Tbk.",
+      "sector": "Perindustrian",
+      "board": "Utama"
+    },
+    {
+      "code": "GJTL",
+      "name": "Gajah Tunggal Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "AUTO",
+      "name": "Astra Otoparts Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "SMSM",
+      "name": "Selamat Sempurna Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "IMAS",
+      "name": "Indomobil Sukses Internasional Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "BOLT",
+      "name": "Garuda Metalindo Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "PBRX",
+      "name": "Pan Brothers Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "SRIL",
+      "name": "Sri Rejeki Isman Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "BELL",
+      "name": "Trisula Textile Industries Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Pengembangan"
+    },
+    {
+      "code": "KRAS",
+      "name": "Krakatau Steel (Persero) Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "ISSP",
+      "name": "Steel Pipe Industry of Indonesia Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "NIKL",
+      "name": "Pelat Timah Nusantara Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "CTBN",
+      "name": "Citra Tubindo Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "ALMI",
+      "name": "Alumindo Light Metal Industry Tbk.",
+      "sector": "Barang Baku",
+      "board": "Utama"
+    },
+    {
+      "code": "SRTG",
+      "name": "Saratoga Investama Sedaya Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "PANS",
+      "name": "Panin Sekuritas Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "TRIM",
+      "name": "Trimegah Sekuritas Indonesia Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BFIN",
+      "name": "BFI Finance Indonesia Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "ADMF",
+      "name": "Adira Dinamika Multi Finance Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "CFIN",
+      "name": "Clipan Finance Indonesia Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "ASGR",
+      "name": "Astra Graphia Tbk.",
+      "sector": "Teknologi",
+      "board": "Utama"
+    },
+    {
+      "code": "TUGU",
+      "name": "Asuransi Tugu Pratama Indonesia Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "ASBI",
+      "name": "Asuransi Bintang Tbk.",
+      "sector": "Keuangan",
+      "board": "Pengembangan"
+    },
+    {
+      "code": "PNLF",
+      "name": "Panin Financial Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "MASB",
+      "name": "Bank Multiarta Sentosa Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "BINA",
+      "name": "Bank Ina Perdana Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "AMAR",
+      "name": "Bank Amar Indonesia Tbk.",
+      "sector": "Keuangan",
+      "board": "Utama"
+    },
+    {
+      "code": "SIMA",
+      "name": "Siwani Makmur Tbk.",
+      "sector": "Barang Baku",
+      "board": "Pengembangan"
+    },
+    {
+      "code": "FILM",
+      "name": "MD Entertainment Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    },
+    {
+      "code": "MSIN",
+      "name": "MNC Digital Entertainment Tbk.",
+      "sector": "Barang Konsumen Non-Primer",
+      "board": "Utama"
+    }
+  ]
+}

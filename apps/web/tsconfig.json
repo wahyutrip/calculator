@@ -1,0 +1,22 @@
+{
+  "extends": "@mm/tsconfig/react.json",
+  "compilerOptions": {
+    "noEmit": true,
+    // The shared react base sets rootDir for library packages that emit; this app
+    // does not emit, and inheriting that rootDir makes tsc reject every file.
+    "rootDir": ".",
+    "allowJs": true,
+    "incremental": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "preserve",
+    "declaration": false,
+    "declarationMap": false,
+    "plugins": [{ "name": "next" }],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", "e2e"]
+}
