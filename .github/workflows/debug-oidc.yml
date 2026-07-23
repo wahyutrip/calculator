@@ -7,7 +7,6 @@ permissions:
 jobs:
   claims:
     runs-on: ubuntu-latest
-    environment: staging
     steps:
       - name: Print non-secret OIDC claims
         run: |
