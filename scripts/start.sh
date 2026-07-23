@@ -54,6 +54,11 @@ stop_pid web "next dev|next-server" >/dev/null 2>&1 || true
 stop_pid be  "nest start --watch|apps/be/dist/main" >/dev/null 2>&1 || true
 free_port "$WEB_PORT" "web"
 
+if [ "$LAN" = true ]; then
+  # Exports for the child processes only — .env.local is untouched.
+  setup_web_lan_env "$LAN_IP_ARG"
+fi
+
 WEB_CMD=(pnpm run dev)
 SCHEME="http"
 if [ "$HTTPS" = true ]; then
