@@ -14,7 +14,7 @@ This is release one of a larger trading platform. See
 
 ```bash
 ./scripts/setup.sh     # once — no Docker, no database needed
-./scripts/start.sh     # http://localhost:3101
+./scripts/start.sh     # http://localhost:4220 (see specs for ports)
 ```
 
 Node ≥ 20 and pnpm 9.12.0 (`corepack enable`).

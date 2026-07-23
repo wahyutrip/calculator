@@ -37,20 +37,35 @@ Every step is a gate. A red step stops the pipeline; nothing is `continue-on-err
 - **E2E at a mobile viewport** — mobile is the primary target, so the primary
   target is what CI exercises.
 
+## Release flow
+
+```
+feature branch ──PR──▶ main ──PR (approval)──▶ staging ──▶ deploy
+```
+
+`main` and `staging` are both protected and require the three CI checks. Merging
+`main` → `staging` triggers `deploy-staging.yml`, which pauses on the `staging`
+environment's required reviewer before building anything.
+
 ## Deploy access
 
-OIDC, not long-lived keys. The workflow assumes an IAM role scoped to ECR push
-for the `mm-*` repositories only. SSH to the box uses a deploy key held in
-GitHub Secrets.
+OIDC, not long-lived keys, and no SSH at all — the box is reached with SSM Run
+Command. Repository **Variables**: `AWS_REGION`, `AWS_ROLE_ARN`, `ECR_WEB`,
+`EC2_INSTANCE_ID`. The only **Secret** is `WEB_DOTENV_PRIVATE_KEY`, scoped to the
+`staging` environment, which decrypts `infra/env/web/.env.staging` during the
+build.
 
-| Secret | Purpose |
-|---|---|
-| `AWS_ROLE_ARN` | OIDC role for ECR |
-| `DEPLOY_SSH_KEY` | SSH to the EC2 box |
-| `DEPLOY_HOST` / `DEPLOY_USER` | Box address and user |
+> **The OIDC trust condition is not the obvious one.** This account emits
+> GitHub's *immutable identifier* subjects, so the claim is
+> `repo:wahyutrip@35023823/calculator@1309956035:environment:staging` — the owner
+> and repo IDs are embedded. A trust policy matching `repo:wahyutrip/calculator:*`
+> never matches and fails with a bare "Not authorized to perform
+> sts:AssumeRoleWithWebIdentity", which points nowhere useful. The IDs are
+> immutable, so this form also survives a rename. If the role ever needs
+> recreating, read the claim rather than guessing it.
 
-No application secrets exist in the MVP. `NEXT_PUBLIC_APP_URL` is baked at build
-time and is public by definition.
+No application secrets exist in the MVP. `NEXT_PUBLIC_APP_URL` is public by
+definition and baked at build time.
 
 ## Smoke test
 
@@ -67,9 +82,17 @@ breaks installability **without breaking the page** — the app looks perfectly
 fine and quietly stops being a PWA. Only an explicit assertion catches it.
 
 A failed smoke test fails the workflow loudly. It does not auto-roll-back: an
-automatic rollback on a flaky check can flap between two versions, which is
-worse than one bad version plus a human. Rollback is one command
+automatic rollback on a flaky check can flap between two versions, which is worse
+than one bad version plus a human. Rollback is one command
 (`specs/deployment/infrastructure.md`).
+
+The deploy also asserts that **sekar and swat still answer** afterwards. We share
+their box; a deploy that takes a neighbour down is a failed deploy even when our
+own app is fine.
+
+> **Capture, then grep.** Piping `curl` into `grep -q` makes grep exit at the
+> first match and close the pipe; `curl` then dies with exit 23 and `pipefail`
+> fails the step even though the assertion passed. Assign to a variable first.
 
 ## Concurrency and caching
 
