@@ -25,16 +25,16 @@ function Delta({ before, after, digits = 0 }: { before: number; after: number; d
 
 export function AveragingPanel({ state, update, errors, averaging }: Props) {
   return (
-    <section aria-labelledby="avg-heading" className="mm-stack">
-      <div className="mm-section-head">
+    <section aria-labelledby="avg-heading" className="mm-stack-sm">
+      <div className="mm-eyebrow">
         <span id="avg-heading">Average down / up</span>
-        <label style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
+        <label className="mm-check" style={{ marginLeft: 'auto' }}>
           <input
             type="checkbox"
             checked={state.averagingEnabled}
             onChange={(e) => update({ averagingEnabled: e.currentTarget.checked })}
           />
-          <span style={{ textTransform: 'none', letterSpacing: 0 }}>Saya sudah punya posisi</span>
+          <span>Saya sudah punya posisi</span>
         </label>
       </div>
 
@@ -77,8 +77,8 @@ export function AveragingPanel({ state, update, errors, averaging }: Props) {
                 </Callout>
               ) : null}
 
-              <div className="mm-card">
-                <div className="mm-col-head">
+              <div>
+                <div className="mm-eyebrow" style={{ marginBottom: 10 }}>
                   {averaging.mode === 'down' ? 'Average down' : 'Average up'}
                   {averaging.after.riskFree ? (
                     <Badge tone="bull" style={{ marginLeft: 'auto' }}>

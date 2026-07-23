@@ -2,7 +2,7 @@
 
 import { LOT_SIZE } from '@mm/calc';
 import type { SavedPlanDto } from '@mm/schemas';
-import { Badge, Button, Card, formatDecimal, formatRupiah } from '@mm/ui';
+import { Badge, Button, formatDecimal, formatRupiah } from '@mm/ui';
 import Link from 'next/link';
 import * as React from 'react';
 import { planTotals } from '@/lib/plan-state';
@@ -88,28 +88,26 @@ export default function PortfolioPage() {
   if (plans === null) return <p className="mm-empty">Memuat…</p>;
 
   return (
-    <div className="mm-stack">
-      <Card>
-        <div className="mm-section-head">
-          <span>Portofolio</span>
-          <span className="mm-count">{plans.length} rencana</span>
-        </div>
-        {/* Disclosed in the UI, not buried in docs: this is a real consequence of
-            having no account. */}
-        <p className="mm-hint">
-          Rencana disimpan di browser ini saja. Install aplikasi agar data tidak hilang.
-        </p>
-      </Card>
+    <div className="mm-stack" style={{ paddingTop: 20, paddingBottom: 40 }}>
+      <div className="mm-eyebrow" style={{ paddingTop: 4 }}>
+        <span>Portofolio</span>
+        <span className="mm-count">{plans.length} rencana</span>
+      </div>
+      {/* Disclosed in the UI, not buried in docs: this is a real consequence of
+          having no account. */}
+      <p className="mm-hint" style={{ marginTop: -6 }}>
+        Rencana disimpan di browser ini saja. Install aplikasi agar data tidak hilang.
+      </p>
 
       {plans.length === 0 ? (
-        <Card>
+        <div className="mm-panel">
           <div className="mm-empty">
-            <p>Belum ada rencana tersimpan.</p>
+            <p style={{ margin: 0 }}>Belum ada rencana tersimpan.</p>
             <Link href="/" className="mm-btn mm-btn--primary" style={{ textDecoration: 'none' }}>
               Buat rencana pertama
             </Link>
           </div>
-        </Card>
+        </div>
       ) : (
         <div className="mm-planlist">
           {plans.map((plan) => {
@@ -125,13 +123,17 @@ export default function PortfolioPage() {
                 </div>
                 <div className="mm-plan-stats">
                   <span>
-                    {totals ? formatDecimal(totals.lots, 0) : '—'} lot
+                    <b>{totals ? formatDecimal(totals.lots, 0) : '—'}</b> lot
                     {totals ? ` · ${totals.lots * LOT_SIZE} lembar` : ''}
                   </span>
-                  <span>avg {totals && totals.lots > 0 ? formatDecimal(totals.averagePrice, 1) : '—'}</span>
-                  <span>{totals ? formatRupiah(totals.totalValue) : '—'}</span>
-                  <span className="mm-neg">
-                    SL {totals ? formatRupiah(-totals.lossAtStop) : '—'}
+                  <span>
+                    avg <b>{totals && totals.lots > 0 ? formatDecimal(totals.averagePrice, 1) : '—'}</b>
+                  </span>
+                  <span>
+                    modal <b>{totals ? formatRupiah(totals.totalValue) : '—'}</b>
+                  </span>
+                  <span style={{ color: 'var(--bear-ink)' }}>
+                    SL <b style={{ color: 'inherit' }}>{totals ? formatRupiah(-totals.lossAtStop) : '—'}</b>
                   </span>
                 </div>
                 <div className="mm-plan-actions">

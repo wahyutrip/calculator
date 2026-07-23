@@ -24,6 +24,14 @@ That trade is right for the MVP because **entry prices are typed by the user**.
 They are planned prices, not quotes. Live data would not make a single number in
 this tool more correct.
 
+> **Shipped state.** IDX blocks automated access (Cloudflare 403) and the
+> community datasets that used to carry this list are gone, so the bundled file
+> is a **curated seed of ~184 liquid listings**, not the full ~900. The ticker is
+> optional and every price is typed by the user, so the calculator is fully
+> correct without it — but a user searching for a small-cap will not find it yet.
+> `pnpm tickers:refresh` is the path to a complete list once a data source is
+> agreed.
+
 ## 2. Shape
 
 ```jsonc

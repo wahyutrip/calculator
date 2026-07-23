@@ -1,7 +1,6 @@
 'use client';
 
 import type { SavedPlanDto } from '@mm/schemas';
-import { Card } from '@mm/ui';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import * as React from 'react';
@@ -28,26 +27,24 @@ export default function PlanPage() {
   // was silently wiped.
   if (plan === null) {
     return (
-      <Card>
+      <div className="mm-panel" style={{ marginTop: 20 }}>
         <div className="mm-empty">
-          <p>Rencana tidak ditemukan. Mungkin sudah dihapus dari browser ini.</p>
+          <p style={{ margin: 0 }}>Rencana tidak ditemukan. Mungkin sudah dihapus dari browser ini.</p>
           <Link href="/portfolio" className="mm-btn" style={{ textDecoration: 'none' }}>
             Kembali ke portofolio
           </Link>
         </div>
-      </Card>
+      </div>
     );
   }
 
   return (
-    <div className="mm-stack">
-      <Card>
-        <div className="mm-section-head">
-          <span>{plan.name}</span>
-          <span className="mm-count">{plan.status === 'filled' ? 'Terisi' : 'Rencana'}</span>
-        </div>
-      </Card>
+    <>
+      <div className="mm-eyebrow" style={{ paddingTop: 20 }}>
+        <span>{plan.name}</span>
+        <span className="mm-count">{plan.status === 'filled' ? 'Terisi' : 'Rencana'}</span>
+      </div>
       <Calculator initialState={planToFormState(plan)} existingPlan={plan} />
-    </div>
+    </>
   );
 }

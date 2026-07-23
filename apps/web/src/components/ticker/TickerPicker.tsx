@@ -11,13 +11,16 @@ interface Props {
 }
 
 /**
- * A combobox over the bundled IDX list. Entirely optional — the calculator works
- * with no ticker selected, so every dead end offers a way forward rather than
- * blocking.
+ * Optional, and now sized like it.
  *
- * Built on the ARIA combobox pattern directly rather than pulling in cmdk: the
- * behaviour needed here is a listbox with arrow keys, and a dependency for that
- * is not worth the bytes on a tool that must load fast on bad mobile data.
+ * The first design gave this a full-width empty search bar at the top of the
+ * page — the most prominent element on screen for the one field that does not
+ * affect a single number. It collapses to a chip once chosen, and to a modest
+ * search line when not.
+ *
+ * Built on the ARIA combobox pattern rather than pulling in cmdk: this is a
+ * listbox with arrow keys, and a dependency for that is not worth the bytes on a
+ * tool that must load fast on bad mobile data.
  */
 export function TickerPicker({ value, onChange }: Props) {
   const [all, setAll] = React.useState<Ticker[]>([]);
@@ -44,7 +47,6 @@ export function TickerPicker({ value, onChange }: Props) {
 
   const results = React.useMemo(() => {
     if (query.trim()) return searchTickers(all, query);
-    // Empty query shows recents, not the whole list.
     return recent.map((c) => findTicker(all, c)).filter((t): t is Ticker => t !== null);
   }, [all, query, recent]);
 
@@ -77,13 +79,36 @@ export function TickerPicker({ value, onChange }: Props) {
     }
   }
 
+  // Chosen: a compact chip, not a search field taking up a whole row.
+  if (selected && !open) {
+    return (
+      <div className="mm-combo" ref={boxRef}>
+        <span className="mm-ticker-chip">
+          <b>{selected.code}</b>
+          <span>{selected.name}</span>
+          <button
+            type="button"
+            className="mm-iconbtn"
+            style={{ width: 26, height: 26, fontSize: 14 }}
+            aria-label="Hapus pilihan saham"
+            onClick={() => {
+              onChange(null);
+              setQuery('');
+            }}
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div className="mm-combo" ref={boxRef}>
-      <label htmlFor="ticker-search" className="mm-label">
-        Saham <span style={{ textTransform: 'none', letterSpacing: 0 }}>(opsional)</span>
+      <label htmlFor="ticker-search" className="mm-sr-only">
+        Cari saham (opsional)
       </label>
       <div className="mm-ctrl">
-        <span className="mm-affix">🔍</span>
         <input
           id="ticker-search"
           className="mm-input"
@@ -94,7 +119,7 @@ export function TickerPicker({ value, onChange }: Props) {
           aria-autocomplete="list"
           aria-activedescendant={open && results[active] ? `ticker-opt-${active}` : undefined}
           autoComplete="off"
-          placeholder={selected ? `${selected.code} — ${selected.name}` : 'Cari kode atau nama…'}
+          placeholder="Kode atau nama saham — opsional"
           value={query}
           onChange={(e) => {
             setQuery(e.currentTarget.value);
@@ -103,20 +128,6 @@ export function TickerPicker({ value, onChange }: Props) {
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
         />
-        {value ? (
-          <button
-            type="button"
-            className="mm-affix mm-affix--end"
-            style={{ cursor: 'pointer', border: 0, borderLeft: '1px solid var(--border-2)' }}
-            onClick={() => {
-              onChange(null);
-              setQuery('');
-            }}
-            aria-label="Hapus pilihan saham"
-          >
-            ×
-          </button>
-        ) : null}
       </div>
 
       {open ? (
@@ -124,7 +135,7 @@ export function TickerPicker({ value, onChange }: Props) {
           {results.length === 0 ? (
             <li className="mm-combo-option" style={{ color: 'var(--muted)', cursor: 'default' }}>
               {query.trim()
-                ? 'Ticker tidak ditemukan. Anda tetap bisa menghitung tanpa memilih saham.'
+                ? 'Tidak ditemukan — Anda tetap bisa menghitung tanpa memilih saham.'
                 : 'Ketik kode atau nama saham…'}
             </li>
           ) : (
