@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p ${WEB_PORT:-3101}",
-    "dev:https": "next dev --experimental-https -p ${WEB_PORT:-3101}",
+    "dev": "next dev -H 0.0.0.0 -p ${WEB_PORT:-3001}",
+    "dev:https": "next dev --experimental-https -H 0.0.0.0 -p ${WEB_PORT:-3001}",
     "build": "next build",
     "start": "node scripts/serve-standalone.mjs",
     "lint": "eslint .",
