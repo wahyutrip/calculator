@@ -60,14 +60,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <TopBar />
-        <main className="mm-wrap" style={{ paddingTop: 16, paddingBottom: 24 }}>
-          {children}
-        </main>
+        <main className="mm-wrap">{children}</main>
         <footer className="mm-footer">
-          <div className="mm-wrap">
-            Perhitungan bersifat edukatif, bukan rekomendasi investasi. Semua data disimpan di
-            browser Anda.
-          </div>
+          Perhitungan bersifat edukatif, bukan rekomendasi investasi. Semua data disimpan di browser
+          Anda.
         </footer>
         <ServiceWorker />
       </body>

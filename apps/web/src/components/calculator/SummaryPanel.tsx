@@ -1,7 +1,8 @@
 'use client';
 
 import type { SideSummary } from '@mm/calc';
-import { formatDecimal, formatPercent, formatRatio, formatRupiah, formatSignedRupiah } from '@mm/ui';
+import { formatDecimal, formatPercent, formatRatio, formatRupiah } from '@mm/ui';
+import * as React from 'react';
 
 interface Props {
   actual: SideSummary;
@@ -9,65 +10,73 @@ interface Props {
   hasTakeProfit: boolean;
 }
 
-function Metrics({ side, hasTakeProfit }: { side: SideSummary; hasTakeProfit: boolean }) {
-  return (
-    <dl className="mm-metrics">
-      <div className="mm-metric">
-        <dt>Estimated average</dt>
-        <dd>{side.shares > 0 ? formatDecimal(side.averagePrice, 1) : '—'}</dd>
-      </div>
-      <div className="mm-metric">
-        <dt>Total lot</dt>
-        <dd>{formatDecimal(side.lots, side.lots % 1 === 0 ? 0 : 1)}</dd>
-      </div>
-      <div className="mm-metric">
-        <dt>Total modal</dt>
-        <dd>{formatRupiah(side.totalValue)}</dd>
-      </div>
-      <div className="mm-metric">
-        <dt>Loss @ SL</dt>
-        <dd className="mm-neg">
-          {formatRupiah(-side.lossAtStop)} ({formatPercent(side.lossPercentOfBalance)})
-        </dd>
-      </div>
-      {hasTakeProfit ? (
-        <>
-          <div className="mm-metric">
-            <dt>Profit @ TP</dt>
-            <dd className={side.profitAtTarget !== null && side.profitAtTarget < 0 ? 'mm-neg' : 'mm-pos'}>
-              {side.profitAtTarget === null ? '—' : formatSignedRupiah(side.profitAtTarget)}
-            </dd>
-          </div>
-          <div className="mm-metric">
-            <dt>Risk : reward</dt>
-            <dd>{formatRatio(side.riskReward)}</dd>
-          </div>
-        </>
-      ) : null}
-    </dl>
-  );
-}
-
 /**
- * Actual leads and comes FIRST in DOM order — on a phone the number that matters
- * is the one visible without scrolling. The reference tool shows only the planned
- * figures, which hides how much whole-lot rounding cut the real exposure.
+ * Actual against Planned, as one aligned comparison rather than two separate
+ * cards. Reading a difference is the whole point, and two cards side by side
+ * made the eye jump between columns to do it.
+ *
+ * Planned is deliberately the muted column: it is the reference, not the number
+ * you will trade.
  */
 export function SummaryPanel({ actual, planned, hasTakeProfit }: Props) {
+  const rows: Array<{ label: string; actual: string; planned: string; tone?: 'bear' }> = [
+    {
+      label: 'Harga rata-rata',
+      actual: actual.shares > 0 ? formatDecimal(actual.averagePrice, 1) : '—',
+      planned: formatDecimal(planned.averagePrice, 1),
+    },
+    {
+      label: 'Total lot',
+      actual: formatDecimal(actual.lots, 0),
+      planned: formatDecimal(planned.lots, 1),
+    },
+    {
+      label: 'Total modal',
+      actual: formatRupiah(actual.totalValue),
+      planned: formatRupiah(planned.totalValue),
+    },
+    {
+      label: 'Kerugian di SL',
+      actual: `${formatRupiah(-actual.lossAtStop)} (${formatPercent(actual.lossPercentOfBalance)})`,
+      planned: `${formatRupiah(-planned.lossAtStop)} (${formatPercent(planned.lossPercentOfBalance)})`,
+      tone: 'bear',
+    },
+  ];
+
+  if (hasTakeProfit) {
+    rows.push(
+      {
+        label: 'Profit di TP',
+        actual: actual.profitAtTarget === null ? '—' : formatRupiah(actual.profitAtTarget),
+        planned: planned.profitAtTarget === null ? '—' : formatRupiah(planned.profitAtTarget),
+      },
+      {
+        label: 'Risk : reward',
+        actual: formatRatio(actual.riskReward),
+        planned: formatRatio(planned.riskReward),
+      },
+    );
+  }
+
   return (
-    <section className="mm-summary" aria-label="Ringkasan">
-      <div className="mm-col mm-col--primary">
-        <div className="mm-col-head">
-          Actual <span>— lot bulat, yang benar-benar dibeli</span>
-        </div>
-        <Metrics side={actual} hasTakeProfit={hasTakeProfit} />
+    <div className="mm-compare-grid">
+      <div className="mm-ch" />
+      <div className="mm-ch mm-cv" style={{ textAlign: 'right' }}>
+        Actual
       </div>
-      <div className="mm-col">
-        <div className="mm-col-head">
-          Planned <span>— ideal pecahan</span>
-        </div>
-        <Metrics side={planned} hasTakeProfit={hasTakeProfit} />
+      <div className="mm-ch mm-cv" style={{ textAlign: 'right' }}>
+        Planned
       </div>
-    </section>
+
+      {rows.map((r) => (
+        <React.Fragment key={r.label}>
+          <div className="mm-cl">{r.label}</div>
+          <div className={`mm-cv${r.tone === 'bear' ? ' mm-neg' : ''}`} style={r.tone === 'bear' ? { color: 'var(--bear-ink)' } : undefined}>
+            {r.actual}
+          </div>
+          <div className="mm-cv mm-cv--muted">{r.planned}</div>
+        </React.Fragment>
+      ))}
+    </div>
   );
 }

@@ -1,8 +1,7 @@
 /*
- * Design tokens — the single source of truth, generated from
- * specs/design-system/tokens.json.
+ * Design tokens — single source of truth.
  *
- * Rules that keep this from breaking (see specs/design-system/design-tokens.md):
+ * Rules (specs/design-system/design-tokens.md):
  *  1. Components style through these variables only. A hex in a component file
  *     cannot follow the theme and is a bug.
  *  2. Only TOKEN VALUES are redefined per theme — never component rules.
@@ -12,86 +11,136 @@
 
 :root {
   /* semantic — direction of money, never decoration */
-  --bull: #00ab6b;
-  --bull-ink: #009459; /* darker: the market green fails AA for small text */
-  --bull-soft: rgba(0, 171, 107, 0.1);
-  --bear: #f0403c;
-  --bear-soft: rgba(240, 64, 60, 0.1);
-  --warn: #d97706; /* a warning is not a loss */
-  --warn-soft: rgba(217, 119, 6, 0.1);
-  --info: #2e6be6;
+  --bull: #00a968;
+  --bull-ink: #00794a; /* AA-safe for text on light grounds */
+  --bull-soft: rgba(0, 169, 104, 0.09);
+  --bear: #e8453c;
+  --bear-ink: #c62d25;
+  --bear-soft: rgba(232, 69, 60, 0.09);
+  --warn: #c77700;
+  --warn-soft: rgba(199, 119, 0, 0.1);
+  --info: #2f6be4;
 
-  /* grounds — neutrals carry a slight green bias to sit under the accent */
-  --bg: #fafbfa;
+  /* grounds — neutrals carry a slight green bias so they sit under the accent
+     rather than fighting it */
+  --paper: #fbfbf9;
   --surface: #ffffff;
-  --surface-2: #f1f4f2;
-  --border: #e1e6e2;
-  --border-2: #cfd6d1;
-  --text: #0c120f;
-  --muted: #67746c;
-  --faint: #98a39c;
+  --surface-2: #f4f6f3;
+  --border: #e4e8e3;
+  --border-2: #d2d8d0;
+  --text: #101512;
+  --muted: #5f6b64;
+  --faint: #909a93;
 
-  --shadow: 0 1px 2px rgba(12, 18, 15, 0.05), 0 8px 24px -12px rgba(12, 18, 15, 0.12);
+  /* The readout: the one place the design spends any boldness. A dark instrument
+     panel reading against the paper form, so the answer is an object rather than
+     more text. */
+  --readout-bg: #0b1f17;
+  --readout-text: #f2f7f4;
+  --readout-muted: #8fa89c;
+  --readout-line: rgba(255, 255, 255, 0.1);
 
+  --shadow-sm: 0 1px 2px rgba(16, 21, 18, 0.04);
+  --shadow: 0 1px 2px rgba(16, 21, 18, 0.04), 0 10px 30px -18px rgba(16, 21, 18, 0.22);
+  --shadow-readout: 0 2px 4px rgba(11, 31, 23, 0.14), 0 18px 40px -22px rgba(11, 31, 23, 0.5);
+
+  /* Mono is for NUMBERS, tickers and the readout only. Using it for prose and
+     buttons is what made the first pass read like terminal output. */
   --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, 'JetBrains Mono', Menlo, Consolas, monospace;
-  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-sans:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
-  --r-sm: 4px;
-  --r-md: 8px;
-  --r-lg: 12px;
+  --r-sm: 5px;
+  --r-md: 9px;
+  --r-lg: 14px;
 
   --touch: 44px;
-  --motion-fast: 120ms;
+  --motion-fast: 110ms;
   --motion-base: 200ms;
   --ease: cubic-bezier(0.2, 0, 0, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bull-ink: #00c77c;
-    --bull-soft: rgba(0, 171, 107, 0.14);
-    --bear-soft: rgba(240, 64, 60, 0.14);
-    --warn-soft: rgba(217, 119, 6, 0.16);
-    --bg: #0e1116;
-    --surface: #161b22;
-    --surface-2: #1c232c;
-    --border: #262c36;
-    --border-2: #333b47;
-    --text: #e6e8eb;
-    --muted: #8b949e;
-    --faint: #6b747e;
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+    --bull-ink: #34d693;
+    --bull-soft: rgba(0, 169, 104, 0.16);
+    --bear-ink: #ff6b62;
+    --bear-soft: rgba(232, 69, 60, 0.16);
+    --warn: #e0940f;
+    --warn-soft: rgba(224, 148, 15, 0.16);
+
+    --paper: #0c0f0e;
+    --surface: #141a18;
+    --surface-2: #1b2320;
+    --border: #252e2a;
+    --border-2: #33403a;
+    --text: #e8edea;
+    --muted: #93a29a;
+    --faint: #6c7a73;
+
+    /* In dark the readout lifts ABOVE the ground instead of sinking below it —
+       inverting the light treatment literally would make it vanish. */
+    --readout-bg: #1c2b24;
+    --readout-text: #f2f7f4;
+    --readout-muted: #9ab3a6;
+    --readout-line: rgba(255, 255, 255, 0.09);
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px -18px rgba(0, 0, 0, 0.8);
+    --shadow-readout: 0 2px 6px rgba(0, 0, 0, 0.5), 0 18px 40px -24px rgba(0, 0, 0, 0.9);
   }
 }
 
 :root[data-theme='dark'] {
-  --bull-ink: #00c77c;
-  --bull-soft: rgba(0, 171, 107, 0.14);
-  --bear-soft: rgba(240, 64, 60, 0.14);
-  --warn-soft: rgba(217, 119, 6, 0.16);
-  --bg: #0e1116;
-  --surface: #161b22;
-  --surface-2: #1c232c;
-  --border: #262c36;
-  --border-2: #333b47;
-  --text: #e6e8eb;
-  --muted: #8b949e;
-  --faint: #6b747e;
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --bull-ink: #34d693;
+  --bull-soft: rgba(0, 169, 104, 0.16);
+  --bear-ink: #ff6b62;
+  --bear-soft: rgba(232, 69, 60, 0.16);
+  --warn: #e0940f;
+  --warn-soft: rgba(224, 148, 15, 0.16);
+
+  --paper: #0c0f0e;
+  --surface: #141a18;
+  --surface-2: #1b2320;
+  --border: #252e2a;
+  --border-2: #33403a;
+  --text: #e8edea;
+  --muted: #93a29a;
+  --faint: #6c7a73;
+
+  --readout-bg: #1c2b24;
+  --readout-text: #f2f7f4;
+  --readout-muted: #9ab3a6;
+  --readout-line: rgba(255, 255, 255, 0.09);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 30px -18px rgba(0, 0, 0, 0.8);
+  --shadow-readout: 0 2px 6px rgba(0, 0, 0, 0.5), 0 18px 40px -24px rgba(0, 0, 0, 0.9);
 }
 
 :root[data-theme='light'] {
-  --bull-ink: #009459;
-  --bull-soft: rgba(0, 171, 107, 0.1);
-  --bear-soft: rgba(240, 64, 60, 0.1);
-  --warn-soft: rgba(217, 119, 6, 0.1);
-  --bg: #fafbfa;
+  --bull-ink: #00794a;
+  --bull-soft: rgba(0, 169, 104, 0.09);
+  --bear-ink: #c62d25;
+  --bear-soft: rgba(232, 69, 60, 0.09);
+  --warn: #c77700;
+  --warn-soft: rgba(199, 119, 0, 0.1);
+
+  --paper: #fbfbf9;
   --surface: #ffffff;
-  --surface-2: #f1f4f2;
-  --border: #e1e6e2;
-  --border-2: #cfd6d1;
-  --text: #0c120f;
-  --muted: #67746c;
-  --faint: #98a39c;
-  --shadow: 0 1px 2px rgba(12, 18, 15, 0.05), 0 8px 24px -12px rgba(12, 18, 15, 0.12);
+  --surface-2: #f4f6f3;
+  --border: #e4e8e3;
+  --border-2: #d2d8d0;
+  --text: #101512;
+  --muted: #5f6b64;
+  --faint: #909a93;
+
+  --readout-bg: #0b1f17;
+  --readout-text: #f2f7f4;
+  --readout-muted: #8fa89c;
+  --readout-line: rgba(255, 255, 255, 0.1);
+
+  --shadow-sm: 0 1px 2px rgba(16, 21, 18, 0.04);
+  --shadow: 0 1px 2px rgba(16, 21, 18, 0.04), 0 10px 30px -18px rgba(16, 21, 18, 0.22);
+  --shadow-readout: 0 2px 4px rgba(11, 31, 23, 0.14), 0 18px 40px -22px rgba(11, 31, 23, 0.5);
 }

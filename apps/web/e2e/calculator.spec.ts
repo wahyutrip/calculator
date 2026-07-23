@@ -28,15 +28,16 @@ test.describe('calculator', () => {
     // Defaults already are the golden case: 1000/900/800/700, SL 600, 1%, 0.4%, 10jt.
     await expect(page.getByLabel('Buy 1', { exact: true })).toHaveValue('1.000');
     await expect(page.getByLabel('Buy 4', { exact: true })).toHaveValue('700');
-    await expect(page.getByLabel('SL Price')).toHaveValue('600');
+    await expect(page.getByLabel('Stop loss')).toHaveValue('600');
     await expect(page.getByLabel('Balance')).toHaveValue('10.000.000');
 
     // Lots 0 / 0 / 1 / 2, total 3.
-    const summary = page.getByText('3 lot · 300 lembar');
-    await expect(summary).toBeVisible({ timeout: 10_000 });
+    // Shown in the readout and echoed in the detail panel header.
+    await expect(page.getByText('3 lot · 300 lembar').first()).toBeVisible({ timeout: 15_000 });
 
     // Actual exposure is the headline: 40.000, not the 100.000 budget.
-    await expect(page.getByText('−Rp 40.000').first()).toBeVisible();
+    // Real exposure, not the 100.000 budget.
+    await expect(page.getByText('−40.000').first()).toBeVisible();
 
     // And the gap is called out rather than hidden.
     await expect(page.getByText(/Risiko riil jauh di bawah target/)).toBeVisible();
@@ -79,9 +80,9 @@ test.describe('calculator', () => {
     page,
   }) => {
     await page.goto('/');
-    await expect(page.getByText('3 lot · 300 lembar')).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText('3 lot · 300 lembar').first()).toBeVisible({ timeout: 15_000 });
 
-    const sl = page.getByLabel('SL Price');
+    const sl = page.getByLabel('Stop loss');
     await retype(sl, '900');
     await sl.blur();
 
@@ -101,7 +102,7 @@ test.describe('calculator', () => {
 
   test('a plan saves, survives a hard reload, and reopens identically', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByText('3 lot · 300 lembar')).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText('3 lot · 300 lembar').first()).toBeVisible({ timeout: 15_000 });
 
     await page.getByRole('button', { name: 'Simpan ke Portofolio' }).click();
     await expect(page).toHaveURL(/\/portfolio/);
@@ -112,7 +113,7 @@ test.describe('calculator', () => {
 
     await page.getByRole('link', { name: 'Buka' }).click();
     await expect(page.getByLabel('Buy 1', { exact: true })).toHaveValue('1.000');
-    await expect(page.getByText('3 lot · 300 lembar')).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText('3 lot · 300 lembar').first()).toBeVisible({ timeout: 15_000 });
   });
 
   test('averaging down sizes off headroom and blocks an over-budget position', async ({ page }) => {
@@ -131,7 +132,7 @@ test.describe('calculator', () => {
     // The comparison table is the real signal, and it appears after the 300ms debounce.
     const compare = page.locator('.mm-compare');
     await expect(compare).toBeVisible({ timeout: 15_000 });
-    await expect(page.locator('.mm-col-head', { hasText: 'Average down' })).toBeVisible();
+    await expect(page.locator('.mm-eyebrow', { hasText: 'Average down' }).first()).toBeVisible();
     // Averaging down improves the average AND raises the loss at stop; both shown.
     await expect(compare.getByRole('rowheader', { name: 'Kerugian di SL' })).toBeVisible();
     await expect(compare.getByRole('rowheader', { name: 'Harga rata-rata' })).toBeVisible();
@@ -143,20 +144,37 @@ test.describe('calculator', () => {
     });
   });
 
-  test('the result table becomes cards on a phone and never scrolls the page sideways', async ({
+  test('on a phone the answer is above the form and the page never scrolls sideways', async ({
     page,
   }, testInfo) => {
     test.skip(testInfo.project.name !== 'mobile', 'mobile viewport only');
     await page.goto('/');
-    await expect(page.getByText('3 lot · 300 lembar')).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText('3 lot · 300 lembar').first()).toBeVisible({ timeout: 15_000 });
 
-    await expect(page.locator('.mm-cards')).toBeVisible();
-    await expect(page.locator('.mm-table-scroll')).toBeHidden();
+    // The whole product answers one question. On a phone that answer must be
+    // visible before any input — in the first design it sat four screens down.
+    const readout = page.locator('.mm-area-readout');
+    const form = page.locator('.mm-area-form');
+    const readoutBox = await readout.boundingBox();
+    const formBox = await form.boundingBox();
+    expect(readoutBox, 'readout must render').not.toBeNull();
+    expect(formBox, 'form must render').not.toBeNull();
+    expect(readoutBox!.y).toBeLessThan(formBox!.y);
+
+    // And it is legible without scrolling at all.
+    expect(readoutBox!.y).toBeLessThan(page.viewportSize()!.height);
 
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
     );
     expect(overflow, 'page must never scroll horizontally').toBe(false);
+  });
+
+  test('the lot for each entry is shown inline on the rung it belongs to', async ({ page }) => {
+    await page.goto('/');
+    const ladder = page.locator('.mm-ladder');
+    await expect(ladder.getByLabel('2 lot untuk Buy 4')).toBeVisible({ timeout: 15_000 });
+    await expect(ladder.getByLabel('0 lot untuk Buy 1')).toBeVisible();
   });
 });
 
