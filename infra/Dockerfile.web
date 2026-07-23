@@ -15,7 +15,8 @@ RUN corepack enable
 WORKDIR /app
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml .npmrc turbo.json ./
 COPY apps/web/package.json apps/web/
-COPY apps/be/package.json apps/be/
+# apps/be is a Phase 2 skeleton with no manifest yet and is not part of the web
+# image. Copying it here would break the build the moment it does not exist.
 COPY packages/ packages/
 RUN pnpm install --frozen-lockfile
 
