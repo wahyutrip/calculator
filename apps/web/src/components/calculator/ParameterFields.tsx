@@ -24,16 +24,16 @@ export function ParameterFields({ state, update, errors }: Props) {
   const feeIsPreset = FEE_PRESETS.includes(state.buyFeePercent);
 
   return (
-    <section aria-labelledby="params-heading">
-      <div className="mm-section-head">
-        <span id="params-heading">Parameter</span>
+    <section aria-labelledby="params-heading" className="mm-stack-sm">
+      <div className="mm-eyebrow">
+        <span id="params-heading">Risiko &amp; modal</span>
       </div>
 
       <div className="mm-params">
-        {/* SL comes first: the whole calculation hangs on it. */}
+        {/* SL first: the whole calculation hangs on it. */}
         <NumericInput
           id="stop-loss"
-          label="SL Price"
+          label="Stop loss"
           value={state.stopLoss}
           onChange={(v) => update({ stopLoss: v })}
           prefix="Rp"
@@ -41,12 +41,23 @@ export function ParameterFields({ state, update, errors }: Props) {
           max={10_000_000}
           snapOnBlur={snapToTick}
           error={errors.stopLoss ?? null}
-          className="mm-stop-field"
+        />
+
+        <NumericInput
+          id="balance"
+          label="Balance"
+          labelSuffix="modal, bukan equity"
+          value={state.balance}
+          onChange={(v) => update({ balance: v })}
+          prefix="Rp"
+          min={MIN_BALANCE}
+          max={MAX_BALANCE}
+          error={errors.balance ?? null}
         />
 
         <Select
           id="risk"
-          label="Risk"
+          label="Risiko"
           value={riskIsPreset ? String(state.riskPercent) : CUSTOM}
           onChange={(e) => {
             const v = e.currentTarget.value;
@@ -55,7 +66,7 @@ export function ParameterFields({ state, update, errors }: Props) {
           options={[
             ...RISK_PRESETS.map((p) => ({
               value: String(p.value),
-              label: `[${formatDecimal(p.value, 1)}%m] ${p.label}`,
+              label: `${formatDecimal(p.value, 1)}%m · ${p.label}`,
             })),
             { value: CUSTOM, label: 'Custom…' },
           ]}
@@ -74,58 +85,35 @@ export function ParameterFields({ state, update, errors }: Props) {
             ...FEE_PRESETS.map((f) => ({ value: String(f), label: `${formatDecimal(f, 2)}%` })),
             { value: CUSTOM, label: 'Custom…' },
           ]}
-          hint={`fee jual ${formatDecimal(state.sellFeePercent, 2)}% (+${formatDecimal(SELL_TAX_PERCENT, 1)}% PPh)`}
+          hint={`jual ${formatDecimal(state.sellFeePercent, 2)}% incl. ${formatDecimal(SELL_TAX_PERCENT, 1)}% PPh`}
           error={errors.buyFeePercent ?? null}
         />
-
-        {/* A plain rupiah amount — not a value in millions. */}
-        <div>
-          <NumericInput
-            id="balance"
-            label="Balance"
-            labelSuffix="(modal, bukan equity)"
-            value={state.balance}
-            onChange={(v) => update({ balance: v })}
-            prefix="Rp"
-            min={MIN_BALANCE}
-            max={MAX_BALANCE}
-            error={errors.balance ?? null}
-          />
-          <div className="mm-quick">
-            {[
-              { label: '+1jt', amount: 1_000_000 },
-              { label: '+10jt', amount: 10_000_000 },
-              { label: '+100jt', amount: 100_000_000 },
-            ].map((chip) => (
-              <button
-                key={chip.label}
-                type="button"
-                onClick={() =>
-                  update({ balance: Math.min((state.balance ?? 0) + chip.amount, MAX_BALANCE) })
-                }
-              >
-                {chip.label}
-              </button>
-            ))}
-            <button type="button" onClick={() => update({ balance: null })}>
-              Kosongkan
-            </button>
-          </div>
-        </div>
       </div>
 
-      <details className="mm-advanced" style={{ marginTop: 12 }}>
-        <summary
-          style={{
-            cursor: 'pointer',
-            fontFamily: 'var(--font-mono)',
-            fontSize: 12,
-            color: 'var(--muted)',
-          }}
-        >
-          Pengaturan lanjutan
-        </summary>
-        <div className="mm-params" style={{ marginTop: 10 }}>
+      <div className="mm-quick">
+        {[
+          { label: '+1jt', amount: 1_000_000 },
+          { label: '+10jt', amount: 10_000_000 },
+          { label: '+100jt', amount: 100_000_000 },
+        ].map((chip) => (
+          <button
+            key={chip.label}
+            type="button"
+            onClick={() =>
+              update({ balance: Math.min((state.balance ?? 0) + chip.amount, MAX_BALANCE) })
+            }
+          >
+            {chip.label}
+          </button>
+        ))}
+        <button type="button" onClick={() => update({ balance: null })}>
+          Kosongkan
+        </button>
+      </div>
+
+      <details className="mm-disclosure">
+        <summary>Take profit &amp; fee jual</summary>
+        <div className="mm-params" style={{ marginTop: 12 }}>
           <NumericInput
             id="take-profit"
             label="Take profit"
@@ -140,15 +128,15 @@ export function ParameterFields({ state, update, errors }: Props) {
           />
           <NumericInput
             id="sell-fee"
-            label="Fee jual (%)"
+            label="Fee jual"
             value={state.sellFeePercent === 0 ? 0 : Math.round(state.sellFeePercent * 100)}
             onChange={(v) =>
               update({ sellFeePercent: v === null ? 0 : v / 100, sellFeeTouched: true })
             }
-            suffix="/100 %"
+            suffix="÷100 %"
             min={0}
             max={150}
-            hint="mengikuti fee beli sampai diubah manual"
+            hint="mengikuti fee beli sampai diubah"
             error={errors.sellFeePercent ?? null}
           />
         </div>

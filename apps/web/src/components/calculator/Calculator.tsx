@@ -1,13 +1,13 @@
 'use client';
 
-import { LOT_SIZE } from '@mm/calc';
-import { Button, Card, formatDecimal, formatGrouped } from '@mm/ui';
+import { Button, formatDecimal, formatGrouped } from '@mm/ui';
 import type { SavedPlanDto } from '@mm/schemas';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { AveragingPanel } from './AveragingPanel';
 import { EntryLadder } from './EntryLadder';
 import { ParameterFields } from './ParameterFields';
+import { Readout } from './Readout';
 import { ResultTable } from './ResultTable';
 import { SummaryPanel } from './SummaryPanel';
 import { WarningList } from './WarningList';
@@ -25,7 +25,7 @@ interface Props {
 export function Calculator({ initialState, existingPlan = null }: Props) {
   const router = useRouter();
   const calc = useCalculator(initialState ?? INITIAL_STATE);
-  const { state, update, setEntry, addEntry, removeEntry, moveEntry, errors, result, stale } = calc;
+  const { state, update, setEntry, addEntry, removeEntry, errors, result, stale } = calc;
   const [toast, setToast] = React.useState<string | null>(null);
 
   React.useEffect(() => {
@@ -47,7 +47,9 @@ export function Calculator({ initialState, existingPlan = null }: Props) {
     const plan: SavedPlanDto = {
       id: existingPlan?.id ?? crypto.randomUUID(),
       ticker: state.ticker,
-      name: existingPlan?.name ?? `${state.ticker ?? 'Rencana'} ${new Date().toLocaleDateString('id-ID')}`,
+      name:
+        existingPlan?.name ??
+        `${state.ticker ?? 'Rencana'} ${new Date().toLocaleDateString('id-ID')}`,
       status: existingPlan?.status ?? 'draft',
       // Only inputs are stored, never computed results — a stored figure would
       // drift from the engine after any fix.
@@ -103,73 +105,92 @@ export function Calculator({ initialState, existingPlan = null }: Props) {
   }
 
   return (
-    <div className="mm-stack">
-      <Card className="mm-stack">
-        <TickerPicker value={state.ticker} onChange={(code) => update({ ticker: code })} />
-        <EntryLadder
-          entries={state.entries}
-          onChange={setEntry}
-          onAdd={addEntry}
-          onRemove={removeEntry}
-          onMove={moveEntry}
-          error={errors.entries ?? null}
-        />
-        <ParameterFields state={state} update={update} errors={errors} />
-      </Card>
-
-      {/* Dims rather than disappearing — the user is never left staring at
-          nothing while correcting a typo. */}
-      <div className={stale ? 'mm-dim' : undefined}>
-        {data ? (
-          <div className="mm-stack">
-            <Card className="mm-stack">
-              <div className="mm-section-head">
-                <span>Hasil</span>
-                <span className="mm-count">
-                  {totalLots} lot · {formatGrouped(totalLots * LOT_SIZE)} lembar
-                </span>
-              </div>
-              <ResultTable
-                rows={data.rows}
-                totalPctOfModal={data.totalPctOfModal}
-                totalLots={totalLots}
-                totalValue={data.actual.totalValue}
-              />
-              <WarningList warnings={data.warnings} />
-              <SummaryPanel
-                actual={data.actual}
-                planned={data.planned}
-                hasTakeProfit={state.takeProfit !== null}
-              />
-            </Card>
-
-            <Card>
-              <AveragingPanel
-                state={state}
-                update={update}
-                errors={errors}
-                averaging={data.averaging}
-              />
-            </Card>
-          </div>
-        ) : (
-          <Card>
-            <p className="mm-empty">
-              Isi minimal satu entry di atas SL, dan balance minimal Rp 100.000.
-            </p>
-          </Card>
-        )}
+    <div className="mm-shell">
+      {/* ── the answer, first in DOM so a phone shows it before the form ── */}
+      <div className="mm-area-readout">
+        <Readout data={data} totalLots={totalLots} hasTakeProfit={state.takeProfit !== null} />
       </div>
 
-      <div className="mm-actions">
-        <Button variant="primary" onClick={save}>
-          {existingPlan ? 'Simpan perubahan' : 'Simpan ke Portofolio'}
-        </Button>
-        <Button onClick={share}>Bagikan</Button>
-        <Button onClick={copySummary}>Salin ringkasan</Button>
-        <Button variant="ghost" onClick={calc.reset}>
-          Reset
-        </Button>
+      {/* ── form ─────────────────────────────────────────────────────── */}
+      <div className="mm-area-form mm-stack">
+        <section className="mm-panel">
+          <div className="mm-panel-body">
+            <TickerPicker value={state.ticker} onChange={(code) => update({ ticker: code })} />
+            <EntryLadder
+              entries={state.entries}
+              rows={data?.rows ?? []}
+              onChange={setEntry}
+              onAdd={addEntry}
+              onRemove={removeEntry}
+              error={errors.entries ?? null}
+            />
+            <ParameterFields state={state} update={update} errors={errors} />
+          </div>
+        </section>
+
+        <section className="mm-panel">
+          <div className="mm-panel-body">
+            <AveragingPanel
+              state={state}
+              update={update}
+              errors={errors}
+              averaging={data?.averaging ?? null}
+            />
+          </div>
+        </section>
+      </div>
+
+      {/* ── detail ───────────────────────────────────────────────────── */}
+      <div className="mm-area-detail mm-stack">
+        {/* Dims rather than disappearing — the user is never left staring at
+            nothing while correcting a typo. */}
+        <div className={stale ? 'mm-dim' : undefined}>
+          {data ? (
+            <div className="mm-stack">
+              {data.warnings.length ? <WarningList warnings={data.warnings} /> : null}
+
+              <section className="mm-panel">
+                <div className="mm-panel-head">
+                  <span className="mm-panel-title">Rincian per entry</span>
+                  <span className="mm-panel-meta">
+                    {totalLots} lot · {formatGrouped(data.actual.shares)} lembar
+                  </span>
+                </div>
+                <ResultTable
+                  rows={data.rows}
+                  totalPctOfModal={data.totalPctOfModal}
+                  totalLots={totalLots}
+                  totalValue={data.actual.totalValue}
+                />
+              </section>
+
+              <section className="mm-panel">
+                <div className="mm-panel-head">
+                  <span className="mm-panel-title">Actual vs planned</span>
+                  <span className="mm-panel-meta">efek pembulatan lot</span>
+                </div>
+                <div className="mm-panel-body">
+                  <SummaryPanel
+                    actual={data.actual}
+                    planned={data.planned}
+                    hasTakeProfit={state.takeProfit !== null}
+                  />
+                </div>
+              </section>
+            </div>
+          ) : null}
+        </div>
+
+        <div className="mm-actions">
+          <Button variant="primary" onClick={save}>
+            {existingPlan ? 'Simpan perubahan' : 'Simpan ke Portofolio'}
+          </Button>
+          <Button onClick={share}>Bagikan</Button>
+          <Button onClick={copySummary}>Salin ringkasan</Button>
+          <Button variant="ghost" onClick={calc.reset}>
+            Reset
+          </Button>
+        </div>
       </div>
 
       {toast ? (

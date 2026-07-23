@@ -26,6 +26,21 @@ Amber exists because a warning is not a loss. Using red for both — the obvious
 shortcut — means "your plan under-uses your risk budget" reads with the same
 urgency as "you are down Rp 40.000", and the user learns to ignore both.
 
+### The readout
+
+One dark instrument panel — `readout.bg` `#0B1F17` in light, `#1C2B24` in dark —
+carrying the lot count, total capital and real risk.
+
+This is the only place the design spends any boldness, and it exists because the
+first build buried the answer: the whole product answers "how many lots do I
+buy?", and that number was rendered as small text in a table below every input.
+On a phone it sat four screens down.
+
+Note the dark value is *lighter* than its ground while the light value is much
+darker than its own. Inverting the treatment literally would make the panel
+vanish into the page; what has to survive the theme flip is the panel reading as
+a distinct object, not its specific lightness.
+
 ### Grounds
 
 | Token | Light | Dark |
@@ -85,12 +100,15 @@ Two families, sharply divided by role.
 
 | Role | Stack | Used for |
 |---|---|---|
-| `font.mono` | `ui-monospace, SF Mono, JetBrains Mono, Menlo, Consolas` | Headings, tickers, labels, and **every figure** |
-| `font.sans` | `system-ui, -apple-system, Segoe UI, Roboto` | Prose and descriptive copy only |
+| `font.sans` | `system-ui, -apple-system, Segoe UI, Roboto` | **All UI text**: labels, buttons, prose, headings |
+| `font.mono` | `ui-monospace, SF Mono, JetBrains Mono, Menlo, Consolas` | **Figures, tickers and the readout — nothing else** |
 
-Monospace is the display voice. It is the vernacular of an order book, it aligns
-digits for free, and it distinguishes this tool from the generic sans-serif SaaS
-look. Prose in monospace is tiring, so descriptive sentences use the sans stack.
+> **Corrected after the first build.** The original rule made monospace the
+> display voice for headings, labels and buttons as well. Applied to everything,
+> it stopped reading as "order book" and started reading as terminal output — the
+> page looked like an unstyled log dump rather than a product. Monospace earns
+> its keep on *numbers*, where it aligns digits and signals precision. Everywhere
+> else it costs legibility for no gain.
 
 Both are **system stacks — no webfonts.** A trading tool must render instantly on
 a bad connection, and a font that fails to load on a phone in a tunnel is worse
