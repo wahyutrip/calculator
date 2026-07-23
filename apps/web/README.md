@@ -3,7 +3,7 @@
 The product: an installable, offline-capable lot-sizing calculator for IDX
 traders. Next.js 16 (App Router) · React 19 · Tailwind v4 · TypeScript strict.
 
-Production: `https://calculator.wahyutrip.com` · Dev: `http://localhost:3101`
+Production: `https://calculator.wahyutrip.com` · Dev: `http://localhost:4220`
 
 ```bash
 ./scripts/start-web.sh          # foreground

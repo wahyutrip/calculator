@@ -19,7 +19,7 @@ Also available as `pnpm setup`, `pnpm start`, `pnpm start:web`, `pnpm stop`,
 
 ```bash
 ./scripts/setup.sh     # once
-./scripts/start.sh     # http://localhost:3101
+./scripts/start.sh     # http://localhost:4220
 ```
 
 The MVP needs **no Docker and no database** — the calculator computes in the
@@ -40,11 +40,16 @@ Windows port-forward and firewall commands.
 
 ## Ports
 
-Web `3101` · API `3100` · Postgres `5433` · Adminer `8081`.
+This checkout: web **4220** · API **4210** · Postgres 5433 · Adminer 8081.
+Documented defaults are the conventional 3001 / 3000 / 5432 / 8080.
 
-Non-standard on purpose: sekar and swat are developed on the same machine and
-hold 3000/3001/5432/8080. Each app's env file is the source of truth, and an
-exported variable always wins — `WEB_PORT=4000 ./scripts/start-web.sh` works.
+sekar and swat already hold 3000/3001 on this machine, which is why `.env.local`
+pins 4210/4220. Precedence is exported var → `.env.local` → default, so
+`WEB_PORT=4000 ./scripts/start-web.sh` works as a one-off and a permanent change
+only means editing `.env.local`.
+
+Both apps bind `0.0.0.0`; the start scripts print the phone URL and, on WSL2, the
+one-time Windows portproxy commands.
 
 ## Conventions
 

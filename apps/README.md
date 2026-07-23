@@ -25,6 +25,6 @@ Enforced by ESLint, not by convention. See
 
 ```bash
 ./scripts/setup.sh              # once — web only, no Docker needed
-./scripts/start.sh              # web on :3101
-./scripts/start.sh --with-be    # web + API + Postgres
+./scripts/start.sh              # web on :4220
+./scripts/start.sh --with-be    # web :4220 + API :4210 + Postgres
 ```

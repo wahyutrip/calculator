@@ -21,8 +21,8 @@ because something genuinely differs between environments.
 
 | Variable | Dev | Production | Required | Purpose |
 |---|---|---|---|---|
-| `WEB_PORT` | `3101` | `3101` | no | Dev server port. Read by the scripts, not by Next. |
-| `NEXT_PUBLIC_APP_URL` | `http://localhost:3101` | `https://calculator.wahyutrip.com` | yes | Canonical URL for metadata, Open Graph, and share links. |
+| `WEB_PORT` | `4220` | `3101` | no | Dev server port (scripts). In production the container listens on 3101, set by the image. |
+| `NEXT_PUBLIC_APP_URL` | `http://localhost:4220` | `https://calculator.wahyutrip.com` | yes | Canonical URL for metadata, Open Graph, and share links. |
 | `NEXT_PUBLIC_API_BASE_URL` | — | — | no | **Phase 2.** Unset in the MVP; the app makes no API calls. |
 | `NEXT_TELEMETRY_DISABLED` | — | `1` | no | Next.js telemetry off in images. |
 
@@ -30,11 +30,11 @@ because something genuinely differs between environments.
 
 | Variable | Dev | Production | Required | Purpose |
 |---|---|---|---|---|
-| `PORT` | `3100` | `3100` | no | API port. |
+| `PORT` | `4210` | `3100` | no | API port (dev vs container). |
 | `NODE_ENV` | `development` | `production` | yes | |
 | `DATABASE_URL` | `postgresql://postgres:postgres@localhost:5433/mm_dev` | RDS URL, from SSM | yes | Prisma connection. |
 | `LOG_LEVEL` | `debug` | `info` | no | |
-| `CORS_ORIGIN` | `http://localhost:3101` | `https://calculator.wahyutrip.com` | yes | Explicit allow-list. Never `*` once auth exists. |
+| `CORS_ORIGIN` | `http://localhost:4220` | `https://calculator.wahyutrip.com` | yes | Explicit allow-list. Never `*` once auth exists. |
 
 Config is validated with zod at boot. A missing or malformed `DATABASE_URL`
 crashes the process with a readable message rather than failing on first query.

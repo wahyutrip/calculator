@@ -3,7 +3,11 @@
 ## Where this runs
 
 The shared **dlhsby EC2 box**, in `ap-southeast-3` (Jakarta). It already hosts
-sekar and swat. We are the third tenant, adding one small container.
+sekar, swat and portal. We are the **fourth** tenant, adding one small container.
+
+Measured before the first deploy: 916 MB RAM with ~160 MB free (4 GB swap
+absorbing the rest) and 16 GB free disk. `mm-web` idles around 40 MB against a
+192 MB limit.
 
 A separate instance was considered and rejected: the MVP is a single stateless
 Node process serving static-ish content to an unproven audience. A new EC2
@@ -48,12 +52,23 @@ at `conf.d/calculator.caddy`, which sekar's deploy never touches.
 name over the `edge` network. A published port on a shared box is an
 unauthenticated service on the public internet.
 
-**4. Always set `mem_limit`.** An unbounded Node process here degrades sekar and
-swat, not just us. Ours is 256MB.
+**4. Always set `mem_limit`.** An unbounded Node process here degrades sekar,
+swat and portal, not just us. Ours is 192 MB.
 
-**5. Restart `sekar-caddy` after every deploy.** Docker gives a recreated
-container a new IP and Caddy caches the upstream resolution. Skipping this
-produces 502s that look like an application bug.
+**5. Reload Caddy after every deploy — do not restart it.** Docker gives a
+recreated container a new IP and Caddy caches the upstream resolution, so
+skipping this produces 502s that look like an application bug. But a *restart*
+drops TLS for sekar, swat and portal for a second or two. Adding a file to the
+bind-mounted `conf.d/` **directory** does not swap the parent inode, so
+
+```bash
+docker exec sekar-caddy caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
+```
+
+picks it up with zero downtime for everyone. `infra/deploy-box.sh` falls back to
+a restart only if the reload fails. (The *box Caddyfile* is bind-mounted as a
+single read-only FILE, which is why editing that in place needs a restart —
+different problem, different file.)
 
 **6. `docker network create edge` must exist before first deploy.** It is
 external to every stack so no single project's `compose down` can delete it.
