@@ -176,17 +176,28 @@ jobs:
           done
           test "$code" = "200"
 
-          # The manifest check is not ceremony: a missing public/ copy in the image
-          # breaks installability WITHOUT breaking the page, so the app looks
-          # perfectly healthy while quietly ceasing to be a PWA. Only an explicit
-          # assertion catches it.
-          curl -fsS "$BASE/manifest.webmanifest" | grep -q LOTSIZE
+          # NOTE: capture first, then grep. Piping curl into `grep -q` makes grep
+          # exit at the first match, closing the pipe; curl then dies with exit 23
+          # and `pipefail` fails the whole step even though the assertion passed.
+
+          # This check is not ceremony: a missing public/ copy in the image breaks
+          # installability WITHOUT breaking the page, so the app looks perfectly
+          # healthy while quietly ceasing to be a PWA. Only an explicit assertion
+          # catches it.
+          manifest=$(curl -fsS "$BASE/manifest.webmanifest")
+          printf '%s' "$manifest" | grep -q LOTSIZE
 
           # A stale service worker pins users to an old build permanently and no
           # redeploy can reach them.
-          curl -fsSI "$BASE/sw.js" | grep -qi 'must-revalidate'
+          swhead=$(curl -fsSI "$BASE/sw.js")
+          printf '%s' "$swhead" | grep -qi 'must-revalidate'
 
-          curl -fsS "$BASE/data/idx-tickers.json" | grep -q '"tickers"'
+          tickers=$(curl -fsS "$BASE/data/idx-tickers.json")
+          printf '%s' "$tickers" | grep -q '"tickers"'
+
+          # The engine is the product; make sure the page really rendered it.
+          home=$(curl -fsS "$BASE/")
+          printf '%s' "$home" | grep -q 'LOTSIZE'
           echo "SMOKE OK"
 
       - name: Verify co-tenants are still healthy

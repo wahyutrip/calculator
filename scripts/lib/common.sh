@@ -67,24 +67,28 @@ env_file_value_or() {
   printf '%s' "${v:-$3}"
 }
 
-# Dev ports. Each app's env file is the source of truth; a real exported env var
-# (e.g. from CI) always wins over the file.
-#   web     → apps/web/.env.local  WEB_PORT  (default 3101)
-#   backend → apps/be/.env.local   PORT      (default 3100)
+# Dev ports. Precedence, highest first:
+#   1. an exported env var (e.g. WEB_PORT=5000 ./scripts/start-web.sh, or CI)
+#   2. the app's own .env.local           ← the day-to-day source of truth
+#   3. the documented default below
 #
-# 3100/3101 deliberately avoid 3000/3001, which sekar and swat already use — all
-# three projects get developed on the same machine and must not fight for ports.
+#   web     → apps/web/.env.local  WEB_PORT  (default 3001, this checkout: 4220)
+#   backend → apps/be/.env.local   PORT      (default 3000, this checkout: 4210)
+#
+# The defaults match the .env.local.example files. sekar and swat already hold
+# 3000/3001 on this machine, which is why .env.local pins 4210/4220 — the file
+# wins, so nothing here needs editing to move ports.
 load_ports() {
   if [ -z "${BE_PORT:-}" ]; then
     BE_PORT="$(env_file_value "$ROOT/apps/be/.env.local" PORT)"
   fi
-  export BE_PORT="${BE_PORT:-3100}"
+  export BE_PORT="${BE_PORT:-3000}"
   export PORT="$BE_PORT"
 
   if [ -z "${WEB_PORT:-}" ]; then
     WEB_PORT="$(env_file_value "$ROOT/apps/web/.env.local" WEB_PORT)"
   fi
-  export WEB_PORT="${WEB_PORT:-3101}"
+  export WEB_PORT="${WEB_PORT:-3001}"
 }
 
 # free_port PORT [LABEL] — kill whatever is LISTENing on a TCP port so a fresh
@@ -230,6 +234,18 @@ detect_lan_ip() {
     ip="$(hostname -I 2>/dev/null | awk '{print $1}')"
   fi
   printf '%s' "$ip"
+}
+
+# setup_web_lan_env [IP] — export the LAN settings for the child process only;
+# .env.local is never rewritten. `next dev` already binds 0.0.0.0, so the app is
+# reachable as soon as the port is open; Next also needs the origin allow-listed
+# or it rejects cross-origin dev requests from the phone.
+setup_web_lan_env() {
+  local ip="${1:-$(detect_lan_ip)}"
+  [ -n "$ip" ] || return 0
+  export MM_LAN_IP="$ip"
+  # Next 15 blocks dev requests from an origin it was not told about.
+  export ALLOWED_DEV_ORIGINS="http://$ip:$WEB_PORT,https://$ip:$WEB_PORT"
 }
 
 # print_web_lan_help [IP] [SCHEME] — print the phone URL and, on WSL2, the

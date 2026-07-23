@@ -50,7 +50,11 @@ if [ "$HTTPS" = true ]; then
   print_info "locally-trusted certificate; accept the warning once on the phone."
 fi
 
-[ "$LAN" = true ] && print_web_lan_help "$LAN_IP_ARG" "$SCHEME"
+if [ "$LAN" = true ]; then
+  # Exports for the child process only — .env.local is untouched.
+  setup_web_lan_env "$LAN_IP_ARG"
+  print_web_lan_help "$LAN_IP_ARG" "$SCHEME"
+fi
 
 print_info "Starting web on :$WEB_PORT (foreground — Ctrl+C to stop)..."
 cd "$ROOT/apps/web" && pnpm run "$SCRIPT"
